@@ -1,6 +1,8 @@
 package net.kunmc.lab.%package%;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.HumanEntity;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +32,30 @@ public class Utils {
             }
         }
         return s(r);
+    }
+
+    public static void warning(HumanEntity h, String... m) {
+        for (String s : m) {
+            h.sendMessage(ChatColor.YELLOW + "⚠" + s);
+        }
+    }
+
+    public static void error(HumanEntity h, String... m) {
+        for (String s : m) {
+            h.sendMessage(ChatColor.RED + "✖" + s);
+        }
+    }
+
+    public static void success(HumanEntity h, String... m) {
+        for (String s : m) {
+            h.sendMessage(ChatColor.GREEN + "✔" + s);
+        }
+    }
+
+    public static void info(HumanEntity h, String... m) {
+        for (String s : m) {
+            h.sendMessage(ChatColor.AQUA + "☞" + s);
+        }
     }
 
 }
