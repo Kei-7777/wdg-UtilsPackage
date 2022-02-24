@@ -3,10 +3,11 @@ package net.kunmc.lab.%package%;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.scoreboard.Team;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Utils {
 
@@ -24,7 +25,7 @@ public class Utils {
     }
 
     public static List<String> cl(List<String> l, String a) {
-        if(a.length() < 1) return s(l);
+        if (a.length() < 1) return s(l);
         List<String> r = new java.util.ArrayList<>();
         for (String s : l) {
             if (s.startsWith(a)) {
@@ -58,4 +59,54 @@ public class Utils {
         }
     }
 
+    public static Team getTeam(String name) {
+        return Bukkit.getScoreboardManager().getMainScoreboard().getTeam(name);
+    }
+
+    public static Team createTeam(String name) {
+        return Bukkit.getScoreboardManager().getMainScoreboard().registerNewTeam(name);
+    }
+
+    public static void sball(String... s) {
+        Bukkit.getOnlinePlayers().forEach(p -> { sb(p, s); });
+    }
+
+    public static void sb(Player p, String... s) {
+        String[] elements = Arrays.copyOf(s, 16);
+        if (elements[0] == null) elements[0] = "タイトル未設定";
+        if (elements[0].length() > 32) elements[0] = elements[0].substring(0, 32);
+        for (int i = 1; i < elements.length; i++)
+            if (elements[i] != null) if (elements[i].length() > 40) elements[i] = elements[i].substring(0, 40);
+        try {
+            p.getScoreboard();
+            if (p.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard() || p.getScoreboard().getObjectives().size() != 1) {
+                p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            }
+            if (p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16)) == null) {
+                p.getScoreboard().registerNewObjective(p.getUniqueId().toString().substring(0, 16), "dummy");
+                Objects.requireNonNull(p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16))).setDisplaySlot(DisplaySlot.SIDEBAR);
+            }
+            Objects.requireNonNull(p.getScoreboard().getObjective(DisplaySlot.SIDEBAR)).setDisplayName(elements[0]);
+            for (int i = 1; i < elements.length; i++)
+                if (elements[i] != null)
+                    if (Objects.requireNonNull(p.getScoreboard().getObjective(DisplaySlot.SIDEBAR)).getScore(elements[i]).getScore() != 16 - i) {
+                        Objects.requireNonNull(p.getScoreboard().getObjective(DisplaySlot.SIDEBAR)).getScore(elements[i]).setScore(16 - i);
+                        for (String string : p.getScoreboard().getEntries())
+                            if (Objects.requireNonNull(p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16))).getScore(string).getScore() == 16 - i)
+                                if (!string.equals(elements[i])) p.getScoreboard().resetScores(string);
+                    }
+            for (String entry : p.getScoreboard().getEntries()) {
+                boolean toErase = true;
+                for (String element : elements) {
+                    if (element != null && element.equals(entry) && Objects.requireNonNull(p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16))).getScore(entry).getScore() == 16 - Arrays.asList(elements).indexOf(element)) {
+                        toErase = false;
+                        break;
+                    }
+                }
+                if (toErase) p.getScoreboard().resetScores(entry);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
