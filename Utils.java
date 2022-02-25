@@ -1,4 +1,5 @@
-package net.kunmc.lab.%package%;
+package net.kunmc.lab.farmbattle;
+// package net.kunmc.lab.%package%;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,15 +15,15 @@ public class Utils {
     public static List<String> voidList() { return Collections.singletonList(""); }
 
     // Message
-    public static void warning(HumanEntity h, String... m)  { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.YELLOW + "⚠" + s); }); }
-    public static void error(HumanEntity h, String... m)    { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.RED + "✖" + s); });   }
-    public static void success(HumanEntity h, String... m)  { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.GREEN + "✔" + s); }); }
-    public static void info(HumanEntity h, String... m)     { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.AQUA + "☞" + s); });  }
-    public static void warningAll(String... s)              { Bukkit.getOnlinePlayers().forEach(p -> { warning(p, s); });                    }
-    public static void infoAll(String... s)                 { Bukkit.getOnlinePlayers().forEach(p -> { info(p, s); });                       }
-    public static void errorAll(String... s)                { Bukkit.getOnlinePlayers().forEach(p -> { error(p, s); });                      }
-    public static void successAll(String... s)              { Bukkit.getOnlinePlayers().forEach(p -> { success(p, s); });                    }
-    public static void broadcast(String... m)               { Arrays.stream(m).forEach(Bukkit::broadcastMessage);                            }
+    public static void warning(HumanEntity h, String... m)  { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.YELLOW + "⚠" + s); });  }
+    public static void error(HumanEntity h, String... m)    { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.RED + "✖" + s); });    }
+    public static void success(HumanEntity h, String... m)  { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.GREEN + "✔" + s); });  }
+    public static void info(HumanEntity h, String... m)     { Arrays.stream(m).forEach(s -> { h.sendMessage(ChatColor.AQUA + "☞" + s); });   }
+    public static void warningAll(String... m)              { Arrays.stream(m).forEach(s -> { Bukkit.broadcastMessage(ChatColor.YELLOW + "⚠" + s); });   }
+    public static void infoAll(String... m)                 { Arrays.stream(m).forEach(s -> { Bukkit.broadcastMessage(ChatColor.RED + "✖" + s); });     }
+    public static void errorAll(String... m)                { Arrays.stream(m).forEach(s -> { Bukkit.broadcastMessage(ChatColor.GREEN + "✔" + s); });   }
+    public static void successAll(String... m)              { Arrays.stream(m).forEach(s -> { Bukkit.broadcastMessage(ChatColor.AQUA + "☞" + s); });    }
+    public static void broadcast(String... m)               { Arrays.stream(m).forEach(Bukkit::broadcastMessage);                                        }
 
     public static List<String> s(List<String> l) {
         Collections.sort(l);
